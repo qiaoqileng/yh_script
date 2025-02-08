@@ -12,8 +12,8 @@ module.exports = {
     path: path.resolve(__dirname, 'dist'),
     filename: '[name].youhou.js',  // 输出的脚本文件名，将根据入口文件名称动态命名
   },
-  mode: 'development',               // 开发模式
-  devtool: 'inline-source-map',      // 调试用的 source map
+  mode: 'production',               // 开发模式
+  // devtool: 'inline-source-map',      // 调试用的 source map
   module: {
     rules: [
       {
