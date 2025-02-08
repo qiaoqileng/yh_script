@@ -5,7 +5,8 @@ const InjectMetaPlugin = require('./InjectMetaPlugin');
 
 module.exports = {
   entry: {// 脚本的入口文件
-    'imtwm_script': './src/imtwm/index.js'
+    'imtwm_script': './src/imtwm/index.js',
+    'pppccc_script': './src/pppccc/index.js'
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
@@ -34,6 +35,7 @@ module.exports = {
       template: './src/index.html',  // 如果需要，可以创建一个 HTML 文件来测试脚本
     }),
     new InjectMetaPlugin(path.resolve(__dirname, 'src/imtwm/index.meta.js')),
+    new InjectMetaPlugin(path.resolve(__dirname, 'src/pppccc/index.meta.js')),
   ],
   devServer: {
     contentBase: path.join(__dirname, 'dist'),
