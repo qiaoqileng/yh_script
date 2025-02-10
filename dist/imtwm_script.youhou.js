@@ -9,4 +9,18 @@
 // @updateURL    https://raw.githubusercontent.com/qiaoqileng/yh_script/refs/heads/master/dist/imtwm_script.youhou.js
 // @downloadURL  https://raw.githubusercontent.com/qiaoqileng/yh_script/refs/heads/master/dist/imtwm_script.youhou.js
 // ==/UserScript==
-(()=>{"use strict";console.log("Tampermonkey script running!"),document.body.style.backgroundColor="lightblue"})();
+/******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+// 引入油猴元数据文件
+
+(function () {
+  'use strict';
+
+  // 你的油猴脚本代码
+  console.log('Tampermonkey script running!');
+
+  // 示例：改变页面背景色
+  document.body.style.backgroundColor = 'lightblue';
+})();
+/******/ })()
+;

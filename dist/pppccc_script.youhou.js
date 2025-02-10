@@ -14,5 +14,579 @@
 // @downloadURL  https://raw.githubusercontent.com/qiaoqileng/yh_script/refs/heads/master/dist/pppccc_script.youhou.js
 // @require      https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js
 // ==/UserScript==
-/*! For license information please see pppccc_script.youhou.js.LICENSE.txt */
-(()=>{"use strict";function t(e){return t="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(t){return typeof t}:function(t){return t&&"function"==typeof Symbol&&t.constructor===Symbol&&t!==Symbol.prototype?"symbol":typeof t},t(e)}function e(){e=function(){return r};var n,r={},o=Object.prototype,i=o.hasOwnProperty,a=Object.defineProperty||function(t,e,n){t[e]=n.value},c="function"==typeof Symbol?Symbol:{},l=c.iterator||"@@iterator",u=c.asyncIterator||"@@asyncIterator",d=c.toStringTag||"@@toStringTag";function s(t,e,n){return Object.defineProperty(t,e,{value:n,enumerable:!0,configurable:!0,writable:!0}),t[e]}try{s({},"")}catch(n){s=function(t,e,n){return t[e]=n}}function f(t,e,n,r){var o=e&&e.prototype instanceof b?e:b,i=Object.create(o.prototype),c=new N(r||[]);return a(i,"_invoke",{value:O(t,n,c)}),i}function p(t,e,n){try{return{type:"normal",arg:t.call(e,n)}}catch(t){return{type:"throw",arg:t}}}r.wrap=f;var v="suspendedStart",h="suspendedYield",m="executing",y="completed",g={};function b(){}function x(){}function w(){}var E={};s(E,l,(function(){return this}));var S=Object.getPrototypeOf,L=S&&S(S(B([])));L&&L!==o&&i.call(L,l)&&(E=L);var _=w.prototype=b.prototype=Object.create(E);function k(t){["next","throw","return"].forEach((function(e){s(t,e,(function(t){return this._invoke(e,t)}))}))}function I(e,n){function r(o,a,c,l){var u=p(e[o],e,a);if("throw"!==u.type){var d=u.arg,s=d.value;return s&&"object"==t(s)&&i.call(s,"__await")?n.resolve(s.__await).then((function(t){r("next",t,c,l)}),(function(t){r("throw",t,c,l)})):n.resolve(s).then((function(t){d.value=t,c(d)}),(function(t){return r("throw",t,c,l)}))}l(u.arg)}var o;a(this,"_invoke",{value:function(t,e){function i(){return new n((function(n,o){r(t,e,n,o)}))}return o=o?o.then(i,i):i()}})}function O(t,e,r){var o=v;return function(i,a){if(o===m)throw Error("Generator is already running");if(o===y){if("throw"===i)throw a;return{value:n,done:!0}}for(r.method=i,r.arg=a;;){var c=r.delegate;if(c){var l=C(c,r);if(l){if(l===g)continue;return l}}if("next"===r.method)r.sent=r._sent=r.arg;else if("throw"===r.method){if(o===v)throw o=y,r.arg;r.dispatchException(r.arg)}else"return"===r.method&&r.abrupt("return",r.arg);o=m;var u=p(t,e,r);if("normal"===u.type){if(o=r.done?y:h,u.arg===g)continue;return{value:u.arg,done:r.done}}"throw"===u.type&&(o=y,r.method="throw",r.arg=u.arg)}}}function C(t,e){var r=e.method,o=t.iterator[r];if(o===n)return e.delegate=null,"throw"===r&&t.iterator.return&&(e.method="return",e.arg=n,C(t,e),"throw"===e.method)||"return"!==r&&(e.method="throw",e.arg=new TypeError("The iterator does not provide a '"+r+"' method")),g;var i=p(o,t.iterator,e.arg);if("throw"===i.type)return e.method="throw",e.arg=i.arg,e.delegate=null,g;var a=i.arg;return a?a.done?(e[t.resultName]=a.value,e.next=t.nextLoc,"return"!==e.method&&(e.method="next",e.arg=n),e.delegate=null,g):a:(e.method="throw",e.arg=new TypeError("iterator result is not an object"),e.delegate=null,g)}function j(t){var e={tryLoc:t[0]};1 in t&&(e.catchLoc=t[1]),2 in t&&(e.finallyLoc=t[2],e.afterLoc=t[3]),this.tryEntries.push(e)}function A(t){var e=t.completion||{};e.type="normal",delete e.arg,t.completion=e}function N(t){this.tryEntries=[{tryLoc:"root"}],t.forEach(j,this),this.reset(!0)}function B(e){if(e||""===e){var r=e[l];if(r)return r.call(e);if("function"==typeof e.next)return e;if(!isNaN(e.length)){var o=-1,a=function t(){for(;++o<e.length;)if(i.call(e,o))return t.value=e[o],t.done=!1,t;return t.value=n,t.done=!0,t};return a.next=a}}throw new TypeError(t(e)+" is not iterable")}return x.prototype=w,a(_,"constructor",{value:w,configurable:!0}),a(w,"constructor",{value:x,configurable:!0}),x.displayName=s(w,d,"GeneratorFunction"),r.isGeneratorFunction=function(t){var e="function"==typeof t&&t.constructor;return!!e&&(e===x||"GeneratorFunction"===(e.displayName||e.name))},r.mark=function(t){return Object.setPrototypeOf?Object.setPrototypeOf(t,w):(t.__proto__=w,s(t,d,"GeneratorFunction")),t.prototype=Object.create(_),t},r.awrap=function(t){return{__await:t}},k(I.prototype),s(I.prototype,u,(function(){return this})),r.AsyncIterator=I,r.async=function(t,e,n,o,i){void 0===i&&(i=Promise);var a=new I(f(t,e,n,o),i);return r.isGeneratorFunction(e)?a:a.next().then((function(t){return t.done?t.value:a.next()}))},k(_),s(_,d,"Generator"),s(_,l,(function(){return this})),s(_,"toString",(function(){return"[object Generator]"})),r.keys=function(t){var e=Object(t),n=[];for(var r in e)n.push(r);return n.reverse(),function t(){for(;n.length;){var r=n.pop();if(r in e)return t.value=r,t.done=!1,t}return t.done=!0,t}},r.values=B,N.prototype={constructor:N,reset:function(t){if(this.prev=0,this.next=0,this.sent=this._sent=n,this.done=!1,this.delegate=null,this.method="next",this.arg=n,this.tryEntries.forEach(A),!t)for(var e in this)"t"===e.charAt(0)&&i.call(this,e)&&!isNaN(+e.slice(1))&&(this[e]=n)},stop:function(){this.done=!0;var t=this.tryEntries[0].completion;if("throw"===t.type)throw t.arg;return this.rval},dispatchException:function(t){if(this.done)throw t;var e=this;function r(r,o){return c.type="throw",c.arg=t,e.next=r,o&&(e.method="next",e.arg=n),!!o}for(var o=this.tryEntries.length-1;o>=0;--o){var a=this.tryEntries[o],c=a.completion;if("root"===a.tryLoc)return r("end");if(a.tryLoc<=this.prev){var l=i.call(a,"catchLoc"),u=i.call(a,"finallyLoc");if(l&&u){if(this.prev<a.catchLoc)return r(a.catchLoc,!0);if(this.prev<a.finallyLoc)return r(a.finallyLoc)}else if(l){if(this.prev<a.catchLoc)return r(a.catchLoc,!0)}else{if(!u)throw Error("try statement without catch or finally");if(this.prev<a.finallyLoc)return r(a.finallyLoc)}}}},abrupt:function(t,e){for(var n=this.tryEntries.length-1;n>=0;--n){var r=this.tryEntries[n];if(r.tryLoc<=this.prev&&i.call(r,"finallyLoc")&&this.prev<r.finallyLoc){var o=r;break}}o&&("break"===t||"continue"===t)&&o.tryLoc<=e&&e<=o.finallyLoc&&(o=null);var a=o?o.completion:{};return a.type=t,a.arg=e,o?(this.method="next",this.next=o.finallyLoc,g):this.complete(a)},complete:function(t,e){if("throw"===t.type)throw t.arg;return"break"===t.type||"continue"===t.type?this.next=t.arg:"return"===t.type?(this.rval=this.arg=t.arg,this.method="return",this.next="end"):"normal"===t.type&&e&&(this.next=e),g},finish:function(t){for(var e=this.tryEntries.length-1;e>=0;--e){var n=this.tryEntries[e];if(n.finallyLoc===t)return this.complete(n.completion,n.afterLoc),A(n),g}},catch:function(t){for(var e=this.tryEntries.length-1;e>=0;--e){var n=this.tryEntries[e];if(n.tryLoc===t){var r=n.completion;if("throw"===r.type){var o=r.arg;A(n)}return o}}throw Error("illegal catch attempt")},delegateYield:function(t,e,r){return this.delegate={iterator:B(t),resultName:e,nextLoc:r},"next"===this.method&&(this.arg=n),g}},r}function n(t,e,n,r,o,i,a){try{var c=t[i](a),l=c.value}catch(t){return void n(t)}c.done?e(l):Promise.resolve(l).then(r,o)}function r(t,e){return function(t){if(Array.isArray(t))return t}(t)||function(t,e){var n=null==t?null:"undefined"!=typeof Symbol&&t[Symbol.iterator]||t["@@iterator"];if(null!=n){var r,o,i,a,c=[],l=!0,u=!1;try{if(i=(n=n.call(t)).next,0===e){if(Object(n)!==n)return;l=!1}else for(;!(l=(r=i.call(n)).done)&&(c.push(r.value),c.length!==e);l=!0);}catch(t){u=!0,o=t}finally{try{if(!l&&null!=n.return&&(a=n.return(),Object(a)!==a))return}finally{if(u)throw o}}return c}}(t,e)||function(t,e){if(t){if("string"==typeof t)return o(t,e);var n={}.toString.call(t).slice(8,-1);return"Object"===n&&t.constructor&&(n=t.constructor.name),"Map"===n||"Set"===n?Array.from(t):"Arguments"===n||/^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)?o(t,e):void 0}}(t,e)||function(){throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.")}()}function o(t,e){(null==e||e>t.length)&&(e=t.length);for(var n=0,r=Array(e);n<e;n++)r[n]=t[n];return r}!function(){var t=GM_getValue("siteConfig",{"taobao.com":{itemSelector:"div#content_items_wrapper > div",nextPageSelector:"div#search-content-leftWrap > div:nth-of-type(3) > div:nth-of-type(4) > div > div > button:nth-of-type(2)",crawlInterval:3e3,fields:{title:"div#content_items_wrapper > div > a > div > div > div:nth-of-type(2) > div > span",price:"div#content_items_wrapper > div > a > div > div > div:nth-of-type(4)  > div:nth-of-type(1)  > span:nth-of-type(1)",image:"div#content_items_wrapper > div > a > div > div > div:nth-of-type(1)  > img:nth-of-type(1)",店铺名称:"div#content_items_wrapper > div > a > div > div:last-child > div > a > div > span:last-child"}},"zhihu.com":{itemSelector:".QuestionItem",nextPageSelector:"",crawlInterval:3e3,fields:{title:".QuestionItem-title",content:".QuestionItem-content",answerCount:".QuestionItem-action"}}}),o=null,i="",a=[],c=!0,l={};function u(){c=!c,this.textContent="当前模式：".concat(c?"手动":"自动"),c?d():function(){return p.apply(this,arguments)}().then((function(){!function(){l={globalOp:"AND",fields:{}},Object.keys(o.fields).forEach((function(t){l.fields[t]={op:"AND",conditions:[]}}));var t=document.createElement("div");t.className="config-modal",t.style.width="600px",t.style.zIndex=9999999999,t.innerHTML='\n            <h3>设置过滤条件</h3>\n            <div>\n                <label>全局条件组合: </label>\n                <select id="global-combine">\n                    <option value="AND">AND</option>\n                    <option value="OR">OR</option>\n                </select>\n            </div>\n            <div id="filterFieldsContainer">\n                '.concat(Object.keys(o.fields).map((function(t){return'\n                    <div style="border:1px solid #ccc; margin:10px 0; padding:5px;">\n                        <h4>字段：'.concat(t,'</h4>\n                        <div>\n                            <label>条件组合: </label>\n                            <select class="field-combine" data-field="').concat(t,'">\n                                <option value="AND">AND</option>\n                                <option value="OR">OR</option>\n                            </select>\n                        </div>\n                        <div class="conditions-container" data-field="').concat(t,'">\n                            \x3c!-- 条件行将在此添加 --\x3e\n                        </div>\n                        <button class="add-condition" data-field="').concat(t,'">添加条件</button>\n                    </div>\n                ')})).join(""),'\n            </div>\n            <br>\n            <button id="confirmFilter">确认过滤</button>\n            <button id="cancelFilter">取消</button>\n        '),document.body.appendChild(t),t.querySelectorAll(".add-condition").forEach((function(e){e.addEventListener("click",(function(e){var n=e.target.getAttribute("data-field"),r=t.querySelector('.conditions-container[data-field="'.concat(n,'"]')),o=document.createElement("div");o.className="condition-row",o.innerHTML='\n                    <select class="condition-operator">\n                        <option value="contains">包含</option>\n                        <option value="not_contains">不包含</option>\n                        <option value="lt">小于</option>\n                        <option value="gt">大于</option>\n                        <option value="eq">等于</option>\n                    </select>\n                    <input type="text" class="condition-value" placeholder="条件值">\n                    <button class="remove-condition">删除</button>\n                ',r.appendChild(o),o.querySelector(".remove-condition").addEventListener("click",(function(){o.remove()}))}))})),document.getElementById("confirmFilter").addEventListener("click",(function(){l.globalOp=document.getElementById("global-combine").value,t.querySelectorAll(".field-combine").forEach((function(t){var e=t.getAttribute("data-field");l.fields[e].op=t.value})),t.querySelectorAll(".conditions-container").forEach((function(t){var e=t.getAttribute("data-field"),n=[];t.querySelectorAll(".condition-row").forEach((function(t){var e=t.querySelector(".condition-operator").value,r=t.querySelector(".condition-value").value.trim();r&&n.push({operator:e,value:r})})),l.fields[e].conditions=n}));var e,n=(e=l,a.filter((function(t){var n=Object.keys(e.fields).map((function(n){var r=e.fields[n],o=r.op,i=r.conditions;if(!i.length)return!0;var a=t[n]||"",c=i.map((function(t){var e=t.operator,n=t.value;switch(e){case"contains":return a.includes(n);case"not_contains":return!a.includes(n);case"lt":return parseFloat(a)<parseFloat(n);case"gt":return parseFloat(a)>parseFloat(n);case"eq":return a===n;default:return!1}}));return"AND"===o?c.every((function(t){return!0===t})):c.some((function(t){return!0===t}))}));return"AND"===e.globalOp?n.every((function(t){return!0===t})):n.some((function(t){return!0===t}))})));t.remove(),h(n)})),document.getElementById("cancelFilter").addEventListener("click",(function(){t.remove(),h()}))}()}))}function d(){s(),new MutationObserver((function(){return s()})).observe(document.body,{childList:!0,subtree:!0})}function s(){document.querySelectorAll(o.itemSelector).forEach((function(t){if(!t.querySelector(".crawler-checkbox")){var e=document.createElement("input");e.type="checkbox",e.className="crawler-checkbox",e.style.position="absolute",e.style.right="5px",e.style.top="5px",e.style.zIndex=99999,e.addEventListener("change",(function(e){var n=f(t);e.target.checked?a.push(n):a=a.filter((function(t){return t.id!==n.id})),document.getElementById("exportData").textContent="导出数据 (".concat(a.length,")")})),t.style.position="relative",t.prepend(e)}}))}function f(t){var e=t.getAttribute("data-crawler-id");e||(e=Math.random().toString(36).substr(2,9),t.setAttribute("data-crawler-id",e));for(var n={id:e},i=0,a=Object.entries(o.fields);i<a.length;i++){var c=r(a[i],2),l=c[0],u=c[1],d=t.querySelector(u);d?u.includes("img")&&d.src?n[l]=d.src:n[l]=d.textContent.trim():n[l]=""}return n}function p(){var t;return t=e().mark((function t(){var n;return e().wrap((function(t){for(;;)switch(t.prev=t.next){case 0:a=[];case 1:return document.querySelectorAll(o.itemSelector).forEach((function(t){var e=f(t);a.some((function(t){return t.id===e.id}))||a.push(e)})),(n=document.querySelector(o.nextPageSelector)).scrollIntoView({behavior:"smooth",block:"center"}),t.next=7,v();case 7:if(!n){t.next=19;break}if(n.disabled||n.classList.contains("disabled")||"true"===n.getAttribute("aria-disabled")){t.next=16;break}return n.click(),n.scrollIntoView({behavior:"smooth",block:"center"}),t.next=14,v();case 14:t.next=17;break;case 16:return t.abrupt("break",22);case 17:t.next=20;break;case 19:return t.abrupt("break",22);case 20:t.next=1;break;case 22:case"end":return t.stop()}}),t)})),p=function(){var e=this,r=arguments;return new Promise((function(o,i){var a=t.apply(e,r);function c(t){n(a,o,i,c,l,"next",t)}function l(t){n(a,o,i,c,l,"throw",t)}c(void 0)}))},p.apply(this,arguments)}function v(){var t=o.crawlInterval||2e3;return new Promise((function(e){return setTimeout(e,t)}))}function h(){var t=c?a:arguments.length>0&&void 0!==arguments[0]?arguments[0]:null;if(t){var e=document.createElement("div");e.className="config-modal",e.style.zIndex=9999999999,e.innerHTML="\n            <div>\n                <h3>预览数据（共 ".concat(t.length,' 条）</h3>\n                <div style="max-height:300px; overflow:auto;">\n                    <table border="1" style="border-collapse: collapse; width:100%;">\n                        <thead>\n                            <tr>').concat(Object.keys(t[0]||{}).map((function(t){return'<th style="padding:5px;">'.concat(t,"</th>")})).join(""),"</tr>\n                        </thead>\n                        <tbody>\n                            ").concat(t.map((function(t){return"<tr>".concat(Object.keys(t).map((function(e){return'<td style="padding:5px;">'.concat(t[e],"</td>")})).join(""),"</tr>")})).join(""),'\n                        </tbody>\n                    </table>\n                </div>\n                <br>\n                <button id="confirmExport">确认导出Excel</button>\n                <button id="closePreview">关闭</button>\n            </div>\n        '),document.body.appendChild(e),document.getElementById("confirmExport").addEventListener("click",(function(){var n,r,o;n=t,r=XLSX.utils.json_to_sheet(n),o=XLSX.utils.book_new(),XLSX.utils.book_append_sheet(o,r,"Data"),XLSX.writeFile(o,"crawler_data_".concat((new Date).toISOString().slice(0,10),".xlsx")),e.remove()})),document.getElementById("closePreview").addEventListener("click",(function(){e.remove()}))}}function m(){var e=document.createElement("div");e.className="config-modal",e.style.width="600px",e.style.zIndex=9999999999,e.innerHTML="\n        <h3>配置当前站点 (".concat(i,')</h3>\n        <div>\n            <label>列表项选择器: </label>\n            <input type="text" id="config_itemSelector" value="').concat(o.itemSelector,'" style="width:80%;"/>\n            <button id="select_itemSelector">选择元素</button>\n        </div>\n        <div>\n            <label>下一页选择器: </label>\n            <input type="text" id="config_nextPageSelector" value="').concat(o.nextPageSelector,'" style="width:80%;"/>\n            <button id="select_nextPageSelector">选择元素</button>\n        </div>\n        <div>\n            <label>每页爬取间隔（毫秒）: </label>\n            <input type="number" id="config_crawlInterval" value="').concat(o.crawlInterval||2e3,'" style="width:80%;"/>\n        </div>\n        <div id="fieldsContainer">\n            <h4>字段配置</h4>\n            <div id="fieldsList">\n                ').concat(Object.entries(o.fields).map((function(t){var e=r(t,2),n=e[0],o=e[1];return'\n                    <div class="field-row">\n                        <input type="text" class="config_field_key" value="'.concat(n,'" style="width:20%;" />\n                        <input type="text" class="config_field_value" value="').concat(o,'" style="width:50%;" />\n                        <button class="select_field">选择元素</button>\n                        <button class="delete_field">删除</button>\n                    </div>\n                ')})).join(""),'\n            </div>\n            <button id="addField">添加字段</button>\n        </div>\n        <button id="saveConfig">保存配置</button>\n        <button id="closeConfig">取消</button>\n    '),document.body.appendChild(e),document.getElementById("saveConfig").addEventListener("click",(function(){o.itemSelector=document.getElementById("config_itemSelector").value.trim(),o.nextPageSelector=document.getElementById("config_nextPageSelector").value.trim(),o.crawlInterval=parseInt(document.getElementById("config_crawlInterval").value.trim(),10)||2e3;var n={};document.querySelectorAll("#fieldsList .field-row").forEach((function(t){var e=t.querySelector(".config_field_key").value.trim(),r=t.querySelector(".config_field_value").value.trim();e&&(n[e]=r)})),o.fields=n,t[i]=o,GM_setValue("siteConfig",t),alert("配置已保存！"),e.remove()})),document.getElementById("closeConfig").addEventListener("click",(function(){e.remove()}))}function y(){var e=document.createElement("div");e.className="config-modal",e.style.width="500px",e.style.zIndex=9999999999,e.innerHTML='\n            <h3>导出配置</h3>\n            <textarea id="exportConfigText" style="width:100%;height:200px;">'.concat(JSON.stringify(t,null,2),'</textarea>\n            <br>\n            <button id="closeExportConfig">关闭</button>\n        '),document.body.appendChild(e),document.getElementById("closeExportConfig").addEventListener("click",(function(){e.remove()}))}function g(){var e=document.createElement("div");e.className="config-modal",e.style.width="500px",e.style.zIndex=9999999999,e.innerHTML='\n            <h3>导入配置</h3>\n            <textarea id="importConfigText" placeholder="粘贴配置JSON" style="width:100%;height:200px;"></textarea>\n            <br>\n            <button id="doImportConfig">导入</button>\n            <button id="closeImportConfig">关闭</button>\n        ',document.body.appendChild(e),document.getElementById("doImportConfig").addEventListener("click",(function(){try{var n=JSON.parse(document.getElementById("importConfigText").value);t=n,GM_setValue("siteConfig",t),alert("配置已导入！"),e.remove()}catch(t){alert("导入失败，请检查JSON格式。")}})),document.getElementById("closeImportConfig").addEventListener("click",(function(){e.remove()}))}setTimeout((function(){var e;GM_addStyle("\n            .crawler-checkbox { transform: scale(1.2); cursor: pointer; }\n            table td, table th { max-width: 300px; overflow: hidden; }\n            .config-modal { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);\n                background: white; padding: 20px; z-index: 10000; box-shadow: 0 0 10px rgba(0,0,0,0.3); }\n            .config-modal input, .config-modal textarea, .config-modal select { margin: 5px 0; }\n            .field-row { margin-bottom: 5px; }\n        "),function(){var e=location.hostname;for(var n in t)if(e.includes(n)){i=n,o=t[n];break}}(),o?((e=document.createElement("div")).style="position: fixed; top: 20px; right: 20px; z-index: 9999;\n                      background: white; padding: 10px; border: 1px solid #ccc;",e.innerHTML='\n            <div>\n                <button id="toggleMode">当前模式：'.concat(c?"手动":"自动",'</button>\n                <button id="exportData">导出数据 (').concat(a.length,')</button>\n                <button id="configSite">配置 siteConfig</button>\n                <button id="exportConfig">导出配置</button>\n                <button id="importConfig">导入配置</button>\n            </div>\n        '),document.body.appendChild(e),document.getElementById("toggleMode").addEventListener("click",u),document.getElementById("exportData").addEventListener("click",h),document.getElementById("configSite").addEventListener("click",m),document.getElementById("exportConfig").addEventListener("click",y),document.getElementById("importConfig").addEventListener("click",g),c&&d()):console.error("当前站点没有配置，请在配置面板中添加配置！")}),2e3)}()})();
+// 引入油猴元数据文件
+(function() {
+    'use strict';
+
+    /***************** 默认配置及持久化存储 *****************/
+    const defaultSiteConfig = {
+        "taobao.com": {
+            "itemSelector": "div#content_items_wrapper > div",
+            "nextPageSelector": "div#search-content-leftWrap > div:nth-of-type(3) > div:nth-of-type(4) > div > div > button:nth-of-type(2)",
+            "crawlInterval": 3000, // 每页间隔时间，单位毫秒
+            "fields": {
+                "title": "div#content_items_wrapper > div > a > div > div > div:nth-of-type(2) > div > span",
+                "price": "div#content_items_wrapper > div > a > div > div > div:nth-of-type(4)  > div:nth-of-type(1)  > span:nth-of-type(1)",
+                "image": "div#content_items_wrapper > div > a > div > div > div:nth-of-type(1)  > img:nth-of-type(1)",
+                "店铺名称": "div#content_items_wrapper > div > a > div > div:last-child > div > a > div > span:last-child"
+            }
+        },
+        "zhihu.com": {
+            "itemSelector": ".QuestionItem",
+            "nextPageSelector": "",
+            "crawlInterval": 3000, // 每页间隔时间，单位毫秒
+            "fields": {
+                "title": ".QuestionItem-title",
+                "content": ".QuestionItem-content",
+                "answerCount": ".QuestionItem-action"
+            }
+        }
+    };
+    // 加载持久化配置
+    let siteConfig = GM_getValue('siteConfig', defaultSiteConfig);
+
+    let currentConfig = null;
+    let currentDomain = '';
+    let collectedData = [];
+    let manualMode = true;
+    // 用于过滤条件配置，结构示例：
+    // {
+    //   globalOp: "AND",
+    //   fields: {
+    //     title: { op: "AND", conditions: [ { operator: "contains", value: "小米" }, { operator: "not_contains", value: "联想" } ] },
+    //     price: { op: "OR", conditions: [ { operator: "lt", value: "1000" }, { operator: "gt", value: "5000" } ] }
+    //   }
+    // }
+    let filterConfig = {};
+
+    // 根据当前域名获取对应配置
+    function initConfig() {
+        const host = location.hostname;
+        for (const domain in siteConfig) {
+            if (host.includes(domain)) {
+                currentDomain = domain;
+                currentConfig = siteConfig[domain];
+                break;
+            }
+        }
+    }
+
+    /***************** 控制面板 *****************/
+    function addControlPanel() {
+        const panel = document.createElement('div');
+        panel.style = `position: fixed; top: 20px; right: 20px; z-index: 9999;
+                      background: white; padding: 10px; border: 1px solid #ccc;`;
+
+        panel.innerHTML = `
+            <div>
+                <button id="toggleMode">当前模式：${manualMode ? '手动' : '自动'}</button>
+                <button id="exportData">导出数据 (${collectedData.length})</button>
+                <button id="configSite">配置 siteConfig</button>
+                <button id="exportConfig">导出配置</button>
+                <button id="importConfig">导入配置</button>
+            </div>
+        `;
+        document.body.appendChild(panel);
+        document.getElementById('toggleMode').addEventListener('click', toggleMode);
+        document.getElementById('exportData').addEventListener('click', showPreview);
+        document.getElementById('configSite').addEventListener('click', openConfigPanel);
+        document.getElementById('exportConfig').addEventListener('click', openExportConfigModal);
+        document.getElementById('importConfig').addEventListener('click', openImportConfigModal);
+    }
+
+    // 切换模式：手动/自动
+    function toggleMode() {
+        manualMode = !manualMode;
+        this.textContent = `当前模式：${manualMode ? '手动' : '自动'}`;
+        if (manualMode) {
+            initManualMode();
+        } else {
+            // 自动模式：开始采集后，完成后弹出过滤条件对话框
+            startAutoCrawl().then(() => {
+                openFilterModal();
+            });
+        }
+    }
+
+    /***************** 数据采集 *****************/
+    // 手动模式：为每个列表项添加复选框
+    function initManualMode() {
+        addCheckboxes();
+        observeDOMChanges();
+    }
+
+    // 为每个列表项添加复选框（防重复添加）
+    function addCheckboxes() {
+        document.querySelectorAll(currentConfig.itemSelector).forEach(item => {
+            if (!item.querySelector('.crawler-checkbox')) {
+                const checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                checkbox.className = 'crawler-checkbox';
+                checkbox.style.position = 'absolute';
+                checkbox.style.right = '5px';
+                checkbox.style.top = '5px';
+                checkbox.style.zIndex = 99999;
+                checkbox.addEventListener('change', e => {
+                    const data = extractItemData(item);
+                    if (e.target.checked) {
+                        collectedData.push(data);
+                    } else {
+                        collectedData = collectedData.filter(d => d.id !== data.id);
+                    }
+                    document.getElementById('exportData').textContent =
+                        `导出数据 (${collectedData.length})`;
+                });
+                item.style.position = 'relative';
+                item.prepend(checkbox);
+            }
+        });
+    }
+
+    // 根据 currentConfig.fields 提取列表项数据
+    function extractItemData(item) {
+        // 尝试从 DOM 上获取已有的 id，否则生成一个新的并保存到元素属性中
+        let id = item.getAttribute('data-crawler-id');
+        if (!id) {
+            id = Math.random().toString(36).substr(2, 9);
+            item.setAttribute('data-crawler-id', id);
+        }
+        const data = { id: id };
+        for (const [field, selector] of Object.entries(currentConfig.fields)) {
+            const el = item.querySelector(selector);
+            if (el) {
+                // 若为图片则取 src 属性，否则取文本
+                if (selector.includes('img') && el.src) {
+                    data[field] = el.src;
+                } else {
+                    data[field] = el.textContent.trim();
+                }
+            } else {
+                data[field] = '';
+            }
+        }
+        return data;
+    }
+
+   async function startAutoCrawl() {
+    // 清空上次数据
+    collectedData = [];
+    while (true) {
+        document.querySelectorAll(currentConfig.itemSelector).forEach(item => {
+            const data = extractItemData(item);
+            if (!collectedData.some(d => d.id === data.id)) {
+                collectedData.push(data);
+            }
+        });
+        const nextPage = document.querySelector(currentConfig.nextPageSelector);
+        // 点击下一页后先滚动到页面底部，确保懒加载内容加载
+        nextPage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        // 等待每页间隔时间，使用配置中的 crawlInterval
+        await waitForPageLoad();
+        if (nextPage) {
+            const isDisabled = nextPage.disabled ||
+                nextPage.classList.contains('disabled') ||
+                nextPage.getAttribute('aria-disabled') === 'true';
+
+            if (!isDisabled) {
+                nextPage.click();
+                // 点击下一页后先滚动到页面底部，确保懒加载内容加载
+                nextPage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                // 等待每页间隔时间，使用配置中的 crawlInterval
+                await waitForPageLoad();
+            } else {
+                break;
+            }
+        } else {
+            break;
+        }
+    }
+   }
+
+    // 等待函数，间隔时间使用当前配置中的 crawlInterval（若未设置则默认2000毫秒）
+    function waitForPageLoad() {
+        const interval = currentConfig.crawlInterval || 2000;
+        return new Promise(resolve => setTimeout(resolve, interval));
+    }
+
+    /***************** 数据预览与导出 *****************/
+    // 预览数据（此处使用过滤后的数据，如果过滤未设置则为全部数据）
+    function showPreview(filteredData = null) {
+        const dataToShow = manualMode ? collectedData : filteredData;
+        if (dataToShow) {
+            const modal = document.createElement('div');
+            modal.className = 'config-modal';
+            modal.style.zIndex = 9999999999;
+            modal.innerHTML = `
+            <div>
+                <h3>预览数据（共 ${dataToShow.length} 条）</h3>
+                <div style="max-height:300px; overflow:auto;">
+                    <table border="1" style="border-collapse: collapse; width:100%;">
+                        <thead>
+                            <tr>${Object.keys(dataToShow[0] || {}).map(h => `<th style="padding:5px;">${h}</th>`).join('')}</tr>
+                        </thead>
+                        <tbody>
+                            ${dataToShow.map(item => `<tr>${Object.keys(item).map(key => `<td style="padding:5px;">${item[key]}</td>`).join('')}</tr>`).join('')}
+                        </tbody>
+                    </table>
+                </div>
+                <br>
+                <button id="confirmExport">确认导出Excel</button>
+                <button id="closePreview">关闭</button>
+            </div>
+        `;
+            document.body.appendChild(modal);
+            document.getElementById('confirmExport').addEventListener('click', () => {
+                exportToExcel(dataToShow);
+                modal.remove();
+            });
+            document.getElementById('closePreview').addEventListener('click', () => {
+                modal.remove();
+            });
+        }
+    }
+
+    // 利用 SheetJS 导出 Excel 文件
+    function exportToExcel(dataToExport) {
+        const ws = XLSX.utils.json_to_sheet(dataToExport);
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, "Data");
+        XLSX.writeFile(wb, `crawler_data_${new Date().toISOString().slice(0,10)}.xlsx`);
+    }
+
+    // 观察 DOM 变化，自动为新增列表项添加复选框
+    function observeDOMChanges() {
+        const observer = new MutationObserver(() => addCheckboxes());
+        observer.observe(document.body, { childList: true, subtree: true });
+    }
+
+    /***************** 配置面板及导入导出 *****************/
+    // 打开 siteConfig 配置面板（编辑当前站点配置），支持字段的新增与删除
+    function openConfigPanel() {
+        const modal = document.createElement('div');
+        modal.className = 'config-modal';
+        modal.style.width = '600px';
+        modal.style.zIndex = 9999999999;
+        modal.innerHTML = `
+        <h3>配置当前站点 (${currentDomain})</h3>
+        <div>
+            <label>列表项选择器: </label>
+            <input type="text" id="config_itemSelector" value="${currentConfig.itemSelector}" style="width:80%;"/>
+            <button id="select_itemSelector">选择元素</button>
+        </div>
+        <div>
+            <label>下一页选择器: </label>
+            <input type="text" id="config_nextPageSelector" value="${currentConfig.nextPageSelector}" style="width:80%;"/>
+            <button id="select_nextPageSelector">选择元素</button>
+        </div>
+        <div>
+            <label>每页爬取间隔（毫秒）: </label>
+            <input type="number" id="config_crawlInterval" value="${currentConfig.crawlInterval || 2000}" style="width:80%;"/>
+        </div>
+        <div id="fieldsContainer">
+            <h4>字段配置</h4>
+            <div id="fieldsList">
+                ${Object.entries(currentConfig.fields).map(([key, selector]) => `
+                    <div class="field-row">
+                        <input type="text" class="config_field_key" value="${key}" style="width:20%;" />
+                        <input type="text" class="config_field_value" value="${selector}" style="width:50%;" />
+                        <button class="select_field">选择元素</button>
+                        <button class="delete_field">删除</button>
+                    </div>
+                `).join('')}
+            </div>
+            <button id="addField">添加字段</button>
+        </div>
+        <button id="saveConfig">保存配置</button>
+        <button id="closeConfig">取消</button>
+    `;
+        document.body.appendChild(modal);
+        // …（其余绑定事件的代码保持不变）…
+
+        // 保存配置时，同时保存 crawlInterval
+        document.getElementById('saveConfig').addEventListener('click', () => {
+            currentConfig.itemSelector = document.getElementById('config_itemSelector').value.trim();
+            currentConfig.nextPageSelector = document.getElementById('config_nextPageSelector').value.trim();
+            currentConfig.crawlInterval = parseInt(document.getElementById('config_crawlInterval').value.trim(), 10) || 2000;
+            // 重构字段对象：遍历所有 field-row
+            const newFields = {};
+            document.querySelectorAll('#fieldsList .field-row').forEach(row => {
+                const key = row.querySelector('.config_field_key').value.trim();
+                const value = row.querySelector('.config_field_value').value.trim();
+                if (key) {
+                    newFields[key] = value;
+                }
+            });
+            currentConfig.fields = newFields;
+            siteConfig[currentDomain] = currentConfig;
+            GM_setValue('siteConfig', siteConfig);
+            alert('配置已保存！');
+            modal.remove();
+        });
+        document.getElementById('closeConfig').addEventListener('click', () => {
+            modal.remove();
+        });
+    }
+
+
+    // 导出配置：弹出对话框显示 JSON 字符串，便于复制保存
+    function openExportConfigModal() {
+        const modal = document.createElement('div');
+        modal.className = 'config-modal';
+        modal.style.width = '500px';
+        modal.style.zIndex = 9999999999;
+        modal.innerHTML = `
+            <h3>导出配置</h3>
+            <textarea id="exportConfigText" style="width:100%;height:200px;">${JSON.stringify(siteConfig, null, 2)}</textarea>
+            <br>
+            <button id="closeExportConfig">关闭</button>
+        `;
+        document.body.appendChild(modal);
+        document.getElementById('closeExportConfig').addEventListener('click', () => {
+            modal.remove();
+        });
+    }
+
+    // 导入配置：弹出对话框输入 JSON，成功后更新配置
+    function openImportConfigModal() {
+        const modal = document.createElement('div');
+        modal.className = 'config-modal';
+        modal.style.width = '500px';
+        modal.style.zIndex = 9999999999;
+        modal.innerHTML = `
+            <h3>导入配置</h3>
+            <textarea id="importConfigText" placeholder="粘贴配置JSON" style="width:100%;height:200px;"></textarea>
+            <br>
+            <button id="doImportConfig">导入</button>
+            <button id="closeImportConfig">关闭</button>
+        `;
+        document.body.appendChild(modal);
+        document.getElementById('doImportConfig').addEventListener('click', () => {
+            try {
+                const newConfig = JSON.parse(document.getElementById('importConfigText').value);
+                siteConfig = newConfig;
+                GM_setValue('siteConfig', siteConfig);
+                alert('配置已导入！');
+                modal.remove();
+            } catch (e) {
+                alert('导入失败，请检查JSON格式。');
+            }
+        });
+        document.getElementById('closeImportConfig').addEventListener('click', () => {
+            modal.remove();
+        });
+    }
+
+    // 启用元素选取模式：点击页面元素后自动生成其 CSS 选择器填入对应输入框
+    function enableElementSelection(inputElement) {
+        function onClick(event) {
+            event.preventDefault();
+            event.stopPropagation();
+            const el = event.target;
+            const selector = getCssPath(el);
+            inputElement.value = selector;
+            document.removeEventListener('click', onClick, true);
+            if (tempStyle) tempStyle.remove();
+        }
+        const tempStyle = document.createElement('style');
+        tempStyle.innerHTML = `*:hover { outline: 2px solid red !important; }`;
+        document.head.appendChild(tempStyle);
+        document.addEventListener('click', onClick, true);
+    }
+
+    // 简单实现 CSS 路径生成
+    function getCssPath(el) {
+        if (!(el instanceof Element))
+            return '';
+        const path = [];
+        while (el.nodeType === Node.ELEMENT_NODE) {
+            let selector = el.nodeName.toLowerCase();
+            if (el.id) {
+                selector += '#' + el.id;
+                path.unshift(selector);
+                break;
+            } else {
+                let sib = el, nth = 1;
+                while (sib = sib.previousElementSibling) {
+                    if (sib.nodeName.toLowerCase() === selector)
+                        nth++;
+                }
+                if (nth !== 1)
+                    selector += `:nth-of-type(${nth})`;
+            }
+            path.unshift(selector);
+            el = el.parentNode;
+        }
+        return path.join(" > ");
+    }
+
+    /***************** 过滤条件配置（自动模式） *****************/
+    // 弹出过滤条件对话框，允许对各字段设置条件（支持添加、删除条件和设置组合方式）
+    function openFilterModal() {
+        // 默认为每个字段创建空条件
+        filterConfig = { globalOp: "AND", fields: {} };
+        Object.keys(currentConfig.fields).forEach(field => {
+            filterConfig.fields[field] = { op: "AND", conditions: [] };
+        });
+        const modal = document.createElement('div');
+        modal.className = 'config-modal';
+        modal.style.width = '600px';
+        modal.style.zIndex = 9999999999;
+        modal.innerHTML = `
+            <h3>设置过滤条件</h3>
+            <div>
+                <label>全局条件组合: </label>
+                <select id="global-combine">
+                    <option value="AND">AND</option>
+                    <option value="OR">OR</option>
+                </select>
+            </div>
+            <div id="filterFieldsContainer">
+                ${Object.keys(currentConfig.fields).map(field => `
+                    <div style="border:1px solid #ccc; margin:10px 0; padding:5px;">
+                        <h4>字段：${field}</h4>
+                        <div>
+                            <label>条件组合: </label>
+                            <select class="field-combine" data-field="${field}">
+                                <option value="AND">AND</option>
+                                <option value="OR">OR</option>
+                            </select>
+                        </div>
+                        <div class="conditions-container" data-field="${field}">
+                            <!-- 条件行将在此添加 -->
+                        </div>
+                        <button class="add-condition" data-field="${field}">添加条件</button>
+                    </div>
+                `).join('')}
+            </div>
+            <br>
+            <button id="confirmFilter">确认过滤</button>
+            <button id="cancelFilter">取消</button>
+        `;
+        document.body.appendChild(modal);
+
+        // 绑定“添加条件”按钮事件
+        modal.querySelectorAll('.add-condition').forEach(btn => {
+            btn.addEventListener('click', e => {
+                const field = e.target.getAttribute('data-field');
+                const container = modal.querySelector(`.conditions-container[data-field="${field}"]`);
+                const conditionRow = document.createElement('div');
+                conditionRow.className = 'condition-row';
+                conditionRow.innerHTML = `
+                    <select class="condition-operator">
+                        <option value="contains">包含</option>
+                        <option value="not_contains">不包含</option>
+                        <option value="lt">小于</option>
+                        <option value="gt">大于</option>
+                        <option value="eq">等于</option>
+                    </select>
+                    <input type="text" class="condition-value" placeholder="条件值">
+                    <button class="remove-condition">删除</button>
+                `;
+                container.appendChild(conditionRow);
+                // 删除按钮
+                conditionRow.querySelector('.remove-condition').addEventListener('click', () => {
+                    conditionRow.remove();
+                });
+            });
+        });
+
+        document.getElementById('confirmFilter').addEventListener('click', () => {
+            // 更新全局条件组合
+            filterConfig.globalOp = document.getElementById('global-combine').value;
+            // 遍历各字段，记录条件组合和每行条件
+            modal.querySelectorAll('.field-combine').forEach(select => {
+                const field = select.getAttribute('data-field');
+                filterConfig.fields[field].op = select.value;
+            });
+            modal.querySelectorAll('.conditions-container').forEach(container => {
+                const field = container.getAttribute('data-field');
+                const conditions = [];
+                container.querySelectorAll('.condition-row').forEach(row => {
+                    const operator = row.querySelector('.condition-operator').value;
+                    const value = row.querySelector('.condition-value').value.trim();
+                    if (value) {
+                        conditions.push({ operator, value });
+                    }
+                });
+                filterConfig.fields[field].conditions = conditions;
+            });
+            // 应用过滤条件后更新预览（可选择仅导出过滤后的数据）
+            const filteredData = applyFilters(collectedData, filterConfig);
+            modal.remove();
+            showPreview(filteredData);
+        });
+
+        document.getElementById('cancelFilter').addEventListener('click', () => {
+            modal.remove();
+            // 若取消过滤，则直接预览所有数据
+            showPreview();
+        });
+    }
+
+    // 根据 filterConfig 过滤数据，返回过滤后的数据数组
+    function applyFilters(data, config) {
+        return data.filter(item => {
+            // 对每个字段进行过滤，先计算每个字段的条件结果
+            const fieldResults = Object.keys(config.fields).map(field => {
+                const { op, conditions } = config.fields[field];
+                // 若无条件，则认为该字段通过
+                if (!conditions.length) return true;
+                // 获取该字段值
+                const fieldValue = item[field] || '';
+                // 计算每个条件结果
+                const results = conditions.map(cond => {
+                    const { operator, value } = cond;
+                    switch(operator) {
+                        case "contains":
+                            return fieldValue.includes(value);
+                        case "not_contains":
+                            return !fieldValue.includes(value);
+                        case "lt":
+                            return parseFloat(fieldValue) < parseFloat(value);
+                        case "gt":
+                            return parseFloat(fieldValue) > parseFloat(value);
+                        case "eq":
+                            return fieldValue === value;
+                        default:
+                            return false;
+                    }
+                });
+                // 根据本字段的组合方式（AND/OR）组合结果
+                if (op === "AND") {
+                    return results.every(r => r === true);
+                } else {
+                    return results.some(r => r === true);
+                }
+            });
+            // 最后，根据全局组合条件决定最终是否通过
+            if (config.globalOp === "AND") {
+                return fieldResults.every(r => r === true);
+            } else {
+                return fieldResults.some(r => r === true);
+            }
+        });
+    }
+
+    /***************** 初始化 *****************/
+    function init() {
+        GM_addStyle(`
+            .crawler-checkbox { transform: scale(1.2); cursor: pointer; }
+            table td, table th { max-width: 300px; overflow: hidden; }
+            .config-modal { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+                background: white; padding: 20px; z-index: 10000; box-shadow: 0 0 10px rgba(0,0,0,0.3); }
+            .config-modal input, .config-modal textarea, .config-modal select { margin: 5px 0; }
+            .field-row { margin-bottom: 5px; }
+        `);
+        initConfig();
+        if (currentConfig) {
+            addControlPanel();
+            if (manualMode) {
+                initManualMode();
+            }
+        } else {
+            console.error("当前站点没有配置，请在配置面板中添加配置！");
+        }
+    }
+
+    setTimeout(init, 2000);
+})();

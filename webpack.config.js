@@ -6,7 +6,7 @@ const InjectMetaPlugin = require('./InjectMetaPlugin');
 module.exports = {
   entry: {// 脚本的入口文件
     'imtwm_script': './src/imtwm/index.js',
-    'pppccc_script': './src/pppccc/index.js'
+    // 'pppccc_script': './src/pppccc/index.js' // 直接dist里去改, 打包的有问题
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
