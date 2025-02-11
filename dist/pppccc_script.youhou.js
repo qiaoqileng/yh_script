@@ -10,6 +10,7 @@
 // @grant        GM_addStyle
 // @grant        GM_setValue
 // @grant        GM_getValue
+// @connect      raw.githubusercontent.com
 // @updateURL    https://raw.githubusercontent.com/qiaoqileng/yh_script/refs/heads/master/dist/pppccc_script.youhou.js
 // @downloadURL  https://raw.githubusercontent.com/qiaoqileng/yh_script/refs/heads/master/dist/pppccc_script.youhou.js
 // @require      https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js
@@ -17,33 +18,38 @@
 
 (function() {
     'use strict';
-    /***************** 默认配置及持久化存储 *****************/
-    const defaultSiteConfig = {
-        "taobao.com": {
-            "itemSelector": "div#content_items_wrapper > div",
-            "nextPageSelector": ".next-pagination-pages>button:nth-of-type(2)",
-            "crawlInterval": 3000, // 每页间隔时间，单位毫秒
-            "fields": {
-                "title": "div#content_items_wrapper > div > a > div > div > div:nth-of-type(2) > div > span",
-                "price": "div#content_items_wrapper > div > a > div > div > div:nth-of-type(4)  > div:nth-of-type(1)  > span:nth-of-type(1)",
-                "image": "div#content_items_wrapper > div > a > div > div > div:nth-of-type(1)  > img:nth-of-type(1)",
-                "店铺名称": "div#content_items_wrapper > div > a > div > div:last-child > div > a > div > span:last-child"
-            }
-        },
-        "zhihu.com": {
-            "itemSelector": ".QuestionItem",
-            "nextPageSelector": "",
-            "crawlInterval": 3000, // 每页间隔时间，单位毫秒
-            "fields": {
-                "title": ".QuestionItem-title",
-                "content": ".QuestionItem-content",
-                "answerCount": ".QuestionItem-action"
-            }
-        }
-    };
-    // 加载持久化配置
-    let siteConfig = GM_getValue('siteConfig', defaultSiteConfig);
 
+    /***************** 加载远程默认配置 *****************/
+    let defaultSiteConfig = null;
+
+    function loadRemoteConfig() {
+        return new Promise((resolve, reject) => {
+            GM_xmlhttpRequest({
+                method: "GET",
+                url: "https://raw.githubusercontent.com/qiaoqileng/yh_script/refs/heads/master/dist/siteConfig.json",
+                onload: function(response) {
+                    if (response.status === 200) {
+                        try {
+                            defaultSiteConfig = JSON.parse(response.responseText);
+                            resolve(defaultSiteConfig);
+                        } catch (e) {
+                            console.error("解析配置JSON失败", e);
+                            reject(e);
+                        }
+                    } else {
+                        reject(new Error("获取配置失败，状态码：" + response.status));
+                    }
+                },
+                onerror: function(err) {
+                    console.error("请求配置文件错误", err);
+                    reject(err);
+                }
+            });
+        });
+    }
+
+    /***************** 变量初始化 *****************/
+    let siteConfig = null;
     let currentConfig = null;
     let currentDomain = '';
     let collectedData = [];
@@ -58,7 +64,6 @@
     // }
     let filterConfig = {};
 
-    // 根据当前域名获取对应配置
     function initConfig() {
         const host = location.hostname;
         for (const domain in siteConfig) {
@@ -75,7 +80,6 @@
         const panel = document.createElement('div');
         panel.style = `position: fixed; top: 20px; right: 20px; z-index: 9999;
                       background: white; padding: 10px; border: 1px solid #ccc;`;
-        // 此处全选和反选按钮始终显示，点击时如果非手动模式则提示切换
         panel.innerHTML = `
             <div>
                 <button id="toggleMode">当前模式：${manualMode ? '手动' : '自动'}</button>
@@ -97,14 +101,14 @@
         document.getElementById('invertSelect').addEventListener('click', invertSelectItems);
     }
 
-    // 切换模式：手动/自动，切换到自动模式时清空缓存
+    // 切换模式时，如果切换到自动模式则清空缓存
     function toggleMode() {
         manualMode = !manualMode;
         this.textContent = `当前模式：${manualMode ? '手动' : '自动'}`;
         if (manualMode) {
             initManualMode();
         } else {
-            collectedData = []; // 清空缓存列表
+            collectedData = []; // 自动模式清空缓存
             startAutoCrawl().then(() => {
                 openFilterModal();
             });
@@ -112,13 +116,11 @@
     }
 
     /***************** 数据采集 *****************/
-    // 手动模式：为每个列表项添加复选框
     function initManualMode() {
         addCheckboxes();
         observeDOMChanges();
     }
 
-    // 为每个列表项添加复选框（防重复添加）
     function addCheckboxes() {
         document.querySelectorAll(currentConfig.itemSelector).forEach(item => {
             if (!item.querySelector('.crawler-checkbox')) {
@@ -145,7 +147,6 @@
         });
     }
 
-    // 根据 currentConfig.fields 提取列表项数据，固定 id 存在 data-crawler-id 属性中
     function extractItemData(item) {
         let id = item.getAttribute('data-crawler-id');
         if (!id) {
@@ -168,7 +169,6 @@
         return data;
     }
 
-    // 自动采集：遍历当前页，采集数据，再依次点击下一页（若存在且未禁用）
     async function startAutoCrawl() {
         collectedData = [];
         while (true) {
@@ -179,7 +179,6 @@
                 }
             });
             const nextPage = document.querySelector(currentConfig.nextPageSelector);
-            // 先滚动到页面底部，确保懒加载内容加载
             if (nextPage) {
                 nextPage.scrollIntoView({ behavior: 'smooth', block: 'center' });
             }
@@ -201,7 +200,6 @@
         }
     }
 
-    // 等待函数，间隔时间使用当前配置中的 crawlInterval（默认为2000毫秒）
     function waitForPageLoad() {
         const interval = currentConfig.crawlInterval || 2000;
         return new Promise(resolve => setTimeout(resolve, interval));
@@ -217,7 +215,6 @@
             const checkbox = item.querySelector('.crawler-checkbox');
             if (checkbox && !checkbox.checked) {
                 checkbox.checked = true;
-                // 手动触发 change 事件
                 checkbox.dispatchEvent(new Event('change', { bubbles: true }));
             }
         });
@@ -238,7 +235,6 @@
     }
 
     /***************** 数据预览与导出 *****************/
-    // 预览数据（使用过滤后的数据，若过滤未设置则为全部数据）
     function showPreview(filteredData = null) {
         const dataToShow = manualMode ? collectedData : filteredData;
         if (dataToShow) {
@@ -274,7 +270,6 @@
         }
     }
 
-    // 利用 SheetJS 导出 Excel 文件
     function exportToExcel(dataToExport) {
         const ws = XLSX.utils.json_to_sheet(dataToExport);
         const wb = XLSX.utils.book_new();
@@ -283,14 +278,12 @@
     }
 
     /***************** 观察 DOM 变化 *****************/
-    // 自动为新增列表项添加复选框
     function observeDOMChanges() {
         const observer = new MutationObserver(() => addCheckboxes());
         observer.observe(document.body, { childList: true, subtree: true });
     }
 
     /***************** 配置面板及导入导出 *****************/
-    // 打开 siteConfig 配置面板（编辑当前站点配置），支持字段的新增与删除
     function openConfigPanel() {
         const modal = document.createElement('div');
         modal.className = 'config-modal';
@@ -396,7 +389,6 @@
         });
     }
 
-    // 导出配置：弹出对话框显示 JSON 字符串，便于复制保存
     function openExportConfigModal() {
         const modal = document.createElement('div');
         modal.className = 'config-modal';
@@ -414,7 +406,6 @@
         });
     }
 
-    // 导入配置：弹出对话框输入 JSON，成功后更新配置
     function openImportConfigModal() {
         const modal = document.createElement('div');
         modal.className = 'config-modal';
@@ -444,7 +435,6 @@
         });
     }
 
-    // 启用元素选取模式：点击页面元素后自动生成其 CSS 选择器填入对应输入框
     function enableElementSelection(inputElement) {
         function onClick(event) {
             event.preventDefault();
@@ -461,7 +451,6 @@
         document.addEventListener('click', onClick, true);
     }
 
-    // 简单实现 CSS 路径生成
     function getCssPath(el) {
         if (!(el instanceof Element))
             return '';
@@ -488,7 +477,6 @@
     }
 
     /***************** 过滤条件配置（自动模式） *****************/
-    // 弹出过滤条件对话框，允许对各字段设置条件（支持添加、删除条件和设置组合方式）
     function openFilterModal() {
         filterConfig = { globalOp: "AND", fields: {} };
         Object.keys(currentConfig.fields).forEach(field => {
@@ -583,7 +571,6 @@
         });
     }
 
-    // 根据 filterConfig 过滤数据，返回过滤后的数据数组
     function applyFilters(data, config) {
         return data.filter(item => {
             const fieldResults = Object.keys(config.fields).map(field => {
@@ -642,5 +629,12 @@
         }
     }
 
-    setTimeout(init, 2000);
+    loadRemoteConfig().then(config => {
+        siteConfig = GM_getValue('siteConfig', config);
+        setTimeout(init, 2000);
+    }).catch(err => {
+        console.error("加载远程配置失败，使用本地默认配置", err);
+        siteConfig = GM_getValue('siteConfig', {});
+        setTimeout(init, 2000);
+    });
 })();
