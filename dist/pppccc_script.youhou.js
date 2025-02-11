@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Smart List Crawler
 // @namespace    http://tampermonkey.net/
-// @version      0.3.6
+// @version      0.3.7
 // @description  智能列表爬虫，支持手动/自动模式采集数据，支持持久化配置、导入导出配置及类似开发者工具的元素选取和数据过滤功能，同时 siteConfig 中的字段可动态增加和删除
 // @author       qql
 // @match        *://*.taobao.com/*
@@ -14,7 +14,7 @@
 // @downloadURL  https://raw.githubusercontent.com/qiaoqileng/yh_script/refs/heads/master/dist/pppccc_script.youhou.js
 // @require      https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js
 // ==/UserScript==
-// 引入油猴元数据文件
+
 (function() {
     'use strict';
     /***************** 默认配置及持久化存储 *****************/
@@ -75,11 +75,13 @@
         const panel = document.createElement('div');
         panel.style = `position: fixed; top: 20px; right: 20px; z-index: 9999;
                       background: white; padding: 10px; border: 1px solid #ccc;`;
-
+        // 此处全选和反选按钮始终显示，点击时如果非手动模式则提示切换
         panel.innerHTML = `
             <div>
                 <button id="toggleMode">当前模式：${manualMode ? '手动' : '自动'}</button>
                 <button id="exportData">导出数据 (${collectedData.length})</button>
+                <button id="selectAll">全选</button>
+                <button id="invertSelect">反选</button>
                 <button id="configSite">配置 siteConfig</button>
                 <button id="exportConfig">导出配置</button>
                 <button id="importConfig">导入配置</button>
@@ -91,16 +93,18 @@
         document.getElementById('configSite').addEventListener('click', openConfigPanel);
         document.getElementById('exportConfig').addEventListener('click', openExportConfigModal);
         document.getElementById('importConfig').addEventListener('click', openImportConfigModal);
+        document.getElementById('selectAll').addEventListener('click', selectAllItems);
+        document.getElementById('invertSelect').addEventListener('click', invertSelectItems);
     }
 
-    // 切换模式：手动/自动
+    // 切换模式：手动/自动，切换到自动模式时清空缓存
     function toggleMode() {
         manualMode = !manualMode;
         this.textContent = `当前模式：${manualMode ? '手动' : '自动'}`;
         if (manualMode) {
             initManualMode();
         } else {
-            // 自动模式：开始采集后，完成后弹出过滤条件对话框
+            collectedData = []; // 清空缓存列表
             startAutoCrawl().then(() => {
                 openFilterModal();
             });
@@ -141,9 +145,8 @@
         });
     }
 
-    // 根据 currentConfig.fields 提取列表项数据
+    // 根据 currentConfig.fields 提取列表项数据，固定 id 存在 data-crawler-id 属性中
     function extractItemData(item) {
-        // 尝试从 DOM 上获取已有的 id，否则生成一个新的并保存到元素属性中
         let id = item.getAttribute('data-crawler-id');
         if (!id) {
             id = Math.random().toString(36).substr(2, 9);
@@ -153,7 +156,6 @@
         for (const [field, selector] of Object.entries(currentConfig.fields)) {
             const el = item.querySelector(selector);
             if (el) {
-                // 若为图片则取 src 属性，否则取文本
                 if (selector.includes('img') && el.src) {
                     data[field] = el.src;
                 } else {
@@ -166,49 +168,77 @@
         return data;
     }
 
-   async function startAutoCrawl() {
-    // 清空上次数据
-    collectedData = [];
-    while (true) {
-        document.querySelectorAll(currentConfig.itemSelector).forEach(item => {
-            const data = extractItemData(item);
-            if (!collectedData.some(d => d.id === data.id)) {
-                collectedData.push(data);
-            }
-        });
-        const nextPage = document.querySelector(currentConfig.nextPageSelector);
-        // 点击下一页后先滚动到页面底部，确保懒加载内容加载
-        nextPage.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        // 等待每页间隔时间，使用配置中的 crawlInterval
-        await waitForPageLoad();
-        if (nextPage) {
-            const isDisabled = nextPage.disabled ||
-                nextPage.classList.contains('disabled') ||
-                nextPage.getAttribute('aria-disabled') === 'true';
-
-            if (!isDisabled) {
-                nextPage.click();
-                // 点击下一页后先滚动到页面底部，确保懒加载内容加载
+    // 自动采集：遍历当前页，采集数据，再依次点击下一页（若存在且未禁用）
+    async function startAutoCrawl() {
+        collectedData = [];
+        while (true) {
+            document.querySelectorAll(currentConfig.itemSelector).forEach(item => {
+                const data = extractItemData(item);
+                if (!collectedData.some(d => d.id === data.id)) {
+                    collectedData.push(data);
+                }
+            });
+            const nextPage = document.querySelector(currentConfig.nextPageSelector);
+            // 先滚动到页面底部，确保懒加载内容加载
+            if (nextPage) {
                 nextPage.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                // 等待每页间隔时间，使用配置中的 crawlInterval
-                await waitForPageLoad();
+            }
+            await waitForPageLoad();
+            if (nextPage) {
+                const isDisabled = nextPage.disabled ||
+                    nextPage.classList.contains('disabled') ||
+                    nextPage.getAttribute('aria-disabled') === 'true';
+                if (!isDisabled) {
+                    nextPage.click();
+                    nextPage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    await waitForPageLoad();
+                } else {
+                    break;
+                }
             } else {
                 break;
             }
-        } else {
-            break;
         }
     }
-   }
 
-    // 等待函数，间隔时间使用当前配置中的 crawlInterval（若未设置则默认2000毫秒）
+    // 等待函数，间隔时间使用当前配置中的 crawlInterval（默认为2000毫秒）
     function waitForPageLoad() {
         const interval = currentConfig.crawlInterval || 2000;
         return new Promise(resolve => setTimeout(resolve, interval));
     }
 
+    /***************** 全选和反选（手动模式） *****************/
+    function selectAllItems() {
+        if (!manualMode) {
+            alert("请切换到手动模式后再操作！");
+            return;
+        }
+        document.querySelectorAll(currentConfig.itemSelector).forEach(item => {
+            const checkbox = item.querySelector('.crawler-checkbox');
+            if (checkbox && !checkbox.checked) {
+                checkbox.checked = true;
+                // 手动触发 change 事件
+                checkbox.dispatchEvent(new Event('change', { bubbles: true }));
+            }
+        });
+    }
+
+    function invertSelectItems() {
+        if (!manualMode) {
+            alert("请切换到手动模式后再操作！");
+            return;
+        }
+        document.querySelectorAll(currentConfig.itemSelector).forEach(item => {
+            const checkbox = item.querySelector('.crawler-checkbox');
+            if (checkbox) {
+                checkbox.checked = !checkbox.checked;
+                checkbox.dispatchEvent(new Event('change', { bubbles: true }));
+            }
+        });
+    }
+
     /***************** 数据预览与导出 *****************/
-    // 预览数据（此处使用过滤后的数据，如果过滤未设置则为全部数据）
+    // 预览数据（使用过滤后的数据，若过滤未设置则为全部数据）
     function showPreview(filteredData = null) {
         const dataToShow = manualMode ? collectedData : filteredData;
         if (dataToShow) {
@@ -252,7 +282,8 @@
         XLSX.writeFile(wb, `crawler_data_${new Date().toISOString().slice(0,10)}.xlsx`);
     }
 
-    // 观察 DOM 变化，自动为新增列表项添加复选框
+    /***************** 观察 DOM 变化 *****************/
+    // 自动为新增列表项添加复选框
     function observeDOMChanges() {
         const observer = new MutationObserver(() => addCheckboxes());
         observer.observe(document.body, { childList: true, subtree: true });
@@ -300,8 +331,6 @@
     `;
         document.body.appendChild(modal);
 
-
-        // 元素选取绑定
         document.getElementById('select_itemSelector').addEventListener('click', () => {
             enableElementSelection(document.getElementById('config_itemSelector'));
         });
@@ -309,7 +338,6 @@
             enableElementSelection(document.getElementById('config_nextPageSelector'));
         });
 
-        // 为已有字段的选择按钮绑定事件
         modal.querySelectorAll('.select_field').forEach(button => {
             button.addEventListener('click', (e) => {
                 const row = e.target.closest('.field-row');
@@ -318,7 +346,6 @@
             });
         });
 
-        // 绑定删除字段按钮事件
         modal.querySelectorAll('.delete_field').forEach(button => {
             button.addEventListener('click', (e) => {
                 const row = e.target.closest('.field-row');
@@ -326,7 +353,6 @@
             });
         });
 
-        // 绑定添加字段按钮事件
         document.getElementById('addField').addEventListener('click', () => {
             const fieldsList = document.getElementById('fieldsList');
             const newRow = document.createElement('div');
@@ -347,12 +373,10 @@
                 e.target.closest('.field-row').remove();
             });
         });
-        // 保存配置时，同时保存 crawlInterval
         document.getElementById('saveConfig').addEventListener('click', () => {
             currentConfig.itemSelector = document.getElementById('config_itemSelector').value.trim();
             currentConfig.nextPageSelector = document.getElementById('config_nextPageSelector').value.trim();
             currentConfig.crawlInterval = parseInt(document.getElementById('config_crawlInterval').value.trim(), 10) || 2000;
-            // 重构字段对象：遍历所有 field-row
             const newFields = {};
             document.querySelectorAll('#fieldsList .field-row').forEach(row => {
                 const key = row.querySelector('.config_field_key').value.trim();
@@ -371,7 +395,6 @@
             modal.remove();
         });
     }
-
 
     // 导出配置：弹出对话框显示 JSON 字符串，便于复制保存
     function openExportConfigModal() {
@@ -467,7 +490,6 @@
     /***************** 过滤条件配置（自动模式） *****************/
     // 弹出过滤条件对话框，允许对各字段设置条件（支持添加、删除条件和设置组合方式）
     function openFilterModal() {
-        // 默认为每个字段创建空条件
         filterConfig = { globalOp: "AND", fields: {} };
         Object.keys(currentConfig.fields).forEach(field => {
             filterConfig.fields[field] = { op: "AND", conditions: [] };
@@ -497,7 +519,6 @@
                             </select>
                         </div>
                         <div class="conditions-container" data-field="${field}">
-                            <!-- 条件行将在此添加 -->
                         </div>
                         <button class="add-condition" data-field="${field}">添加条件</button>
                     </div>
@@ -509,7 +530,6 @@
         `;
         document.body.appendChild(modal);
 
-        // 绑定“添加条件”按钮事件
         modal.querySelectorAll('.add-condition').forEach(btn => {
             btn.addEventListener('click', e => {
                 const field = e.target.getAttribute('data-field');
@@ -528,7 +548,6 @@
                     <button class="remove-condition">删除</button>
                 `;
                 container.appendChild(conditionRow);
-                // 删除按钮
                 conditionRow.querySelector('.remove-condition').addEventListener('click', () => {
                     conditionRow.remove();
                 });
@@ -536,9 +555,7 @@
         });
 
         document.getElementById('confirmFilter').addEventListener('click', () => {
-            // 更新全局条件组合
             filterConfig.globalOp = document.getElementById('global-combine').value;
-            // 遍历各字段，记录条件组合和每行条件
             modal.querySelectorAll('.field-combine').forEach(select => {
                 const field = select.getAttribute('data-field');
                 filterConfig.fields[field].op = select.value;
@@ -555,7 +572,6 @@
                 });
                 filterConfig.fields[field].conditions = conditions;
             });
-            // 应用过滤条件后更新预览（可选择仅导出过滤后的数据）
             const filteredData = applyFilters(collectedData, filterConfig);
             modal.remove();
             showPreview(filteredData);
@@ -563,7 +579,6 @@
 
         document.getElementById('cancelFilter').addEventListener('click', () => {
             modal.remove();
-            // 若取消过滤，则直接预览所有数据
             showPreview();
         });
     }
@@ -571,14 +586,10 @@
     // 根据 filterConfig 过滤数据，返回过滤后的数据数组
     function applyFilters(data, config) {
         return data.filter(item => {
-            // 对每个字段进行过滤，先计算每个字段的条件结果
             const fieldResults = Object.keys(config.fields).map(field => {
                 const { op, conditions } = config.fields[field];
-                // 若无条件，则认为该字段通过
                 if (!conditions.length) return true;
-                // 获取该字段值
                 const fieldValue = item[field] || '';
-                // 计算每个条件结果
                 const results = conditions.map(cond => {
                     const { operator, value } = cond;
                     switch(operator) {
@@ -596,14 +607,12 @@
                             return false;
                     }
                 });
-                // 根据本字段的组合方式（AND/OR）组合结果
                 if (op === "AND") {
                     return results.every(r => r === true);
                 } else {
                     return results.some(r => r === true);
                 }
             });
-            // 最后，根据全局组合条件决定最终是否通过
             if (config.globalOp === "AND") {
                 return fieldResults.every(r => r === true);
             } else {
