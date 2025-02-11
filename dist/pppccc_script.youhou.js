@@ -1,9 +1,9 @@
 // ==UserScript==
 // @name         Smart List Crawler
 // @namespace    http://tampermonkey.net/
-// @version      0.3.5
+// @version      0.3.6
 // @description  智能列表爬虫，支持手动/自动模式采集数据，支持持久化配置、导入导出配置及类似开发者工具的元素选取和数据过滤功能，同时 siteConfig 中的字段可动态增加和删除
-// @author       YourName
+// @author       qql
 // @match        *://*.taobao.com/*
 // @match        *://*.zhihu.com/*
 // @grant        GM_xmlhttpRequest
@@ -17,12 +17,11 @@
 // 引入油猴元数据文件
 (function() {
     'use strict';
-
     /***************** 默认配置及持久化存储 *****************/
     const defaultSiteConfig = {
         "taobao.com": {
             "itemSelector": "div#content_items_wrapper > div",
-            "nextPageSelector": "div#search-content-leftWrap > div:nth-of-type(3) > div:nth-of-type(4) > div > div > button:nth-of-type(2)",
+            "nextPageSelector": ".next-pagination-pages>button:nth-of-type(2)",
             "crawlInterval": 3000, // 每页间隔时间，单位毫秒
             "fields": {
                 "title": "div#content_items_wrapper > div > a > div > div > div:nth-of-type(2) > div > span",
@@ -300,8 +299,54 @@
         <button id="closeConfig">取消</button>
     `;
         document.body.appendChild(modal);
-        // …（其余绑定事件的代码保持不变）…
 
+
+        // 元素选取绑定
+        document.getElementById('select_itemSelector').addEventListener('click', () => {
+            enableElementSelection(document.getElementById('config_itemSelector'));
+        });
+        document.getElementById('select_nextPageSelector').addEventListener('click', () => {
+            enableElementSelection(document.getElementById('config_nextPageSelector'));
+        });
+
+        // 为已有字段的选择按钮绑定事件
+        modal.querySelectorAll('.select_field').forEach(button => {
+            button.addEventListener('click', (e) => {
+                const row = e.target.closest('.field-row');
+                const input = row.querySelector('.config_field_value');
+                enableElementSelection(input);
+            });
+        });
+
+        // 绑定删除字段按钮事件
+        modal.querySelectorAll('.delete_field').forEach(button => {
+            button.addEventListener('click', (e) => {
+                const row = e.target.closest('.field-row');
+                row.remove();
+            });
+        });
+
+        // 绑定添加字段按钮事件
+        document.getElementById('addField').addEventListener('click', () => {
+            const fieldsList = document.getElementById('fieldsList');
+            const newRow = document.createElement('div');
+            newRow.className = 'field-row';
+            newRow.innerHTML = `
+                <input type="text" class="config_field_key" value="" placeholder="字段名称" style="width:20%;" />
+                <input type="text" class="config_field_value" value="" placeholder="选择器" style="width:50%;" />
+                <button class="select_field">选择元素</button>
+                <button class="delete_field">删除</button>
+            `;
+            fieldsList.appendChild(newRow);
+            newRow.querySelector('.select_field').addEventListener('click', (e) => {
+                const row = e.target.closest('.field-row');
+                const input = row.querySelector('.config_field_value');
+                enableElementSelection(input);
+            });
+            newRow.querySelector('.delete_field').addEventListener('click', (e) => {
+                e.target.closest('.field-row').remove();
+            });
+        });
         // 保存配置时，同时保存 crawlInterval
         document.getElementById('saveConfig').addEventListener('click', () => {
             currentConfig.itemSelector = document.getElementById('config_itemSelector').value.trim();
